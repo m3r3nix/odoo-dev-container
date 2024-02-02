@@ -1,0 +1,24 @@
+{
+    "name": "Odoo Dev Container",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "odoo",
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/custom",
+    "remoteUser": "root",
+    "forwardPorts": [8069],
+    "shutdownAction": "stopCompose",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/bin/bash"
+            },
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "GitHub.copilot",
+                "GitHub.copilot-chat",
+                "DavidAnson.vscode-markdownlint",
+                "DotJoshJohnson.xml"
+            ]
+        }
+    }
+}
