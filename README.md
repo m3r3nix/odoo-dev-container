@@ -1,6 +1,6 @@
 [![Build and Push Odoo Dev Container](https://github.com/m3r3nix/odoo-dev-container/actions/workflows/docker-publish.yml/badge.svg?branch=v17)](https://github.com/m3r3nix/odoo-dev-container/actions/workflows/docker-publish.yml)
 
-# Odoo Development Container in GitHub Codespaces
+# Odoo Development Container for GitHub Codespaces
 
 You can spin up a development-ready environment in just 4 simple steps:
 1. Fork this repository or use it as a template and make it private (particularly if you intend to work with the Enterprise Edition).  
