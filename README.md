@@ -66,6 +66,7 @@ You can create a pre-built Codespace template to speed up the initial boot proce
 
 - Forking the repository initiates a build process for all available Odoo versions simultaneously. Due to these parallel builds, the GitHub Container Registry might face permission limitations. If this occurs, wait until all builds are complete. Then, identify any failed build and select `Re-run failed job`.
 - If you're forking or using this repository as a template more than once, you may encounter a permission issue during the docker image push process. This typically happens because an image with the same name (e.g. `odoo-v15-community`) already exists in your Container Registry, created by a different repository, which means the new repository lacks rights to update the image.  
+  `Error: buildx failed with: ERROR: failed to solve: failed to push ghcr.io/YOURNAME/odoo-v15-community:15.0.20231202: unexpected status from POST request to https://ghcr.io/v2/YOURNAME/odoo-v15-community/blobs/uploads/: 403 Forbidden`  
   To resolve this issue:
   - Navigate to `Packages` and remove the search filter to display all available images in your Container Registry.
   - Select `odoo-v15-community`, proceed to `Package settings`, and under `Manage Actions access`, add your current repository with write access.
