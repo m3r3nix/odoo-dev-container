@@ -7,6 +7,7 @@ services:
     ports:
       - "8069:8069"
     volumes:
+      - ../:/workspace
       - ../custom:/mnt/extra-addons
   db:
     image: postgres:15

@@ -2,7 +2,7 @@
     "name": "Odoo Dev Container",
     "dockerComposeFile": "docker-compose.yml",
     "service": "odoo",
-    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}/custom",
+    "workspaceFolder": "/workspace/custom",
     "remoteUser": "root",
     "forwardPorts": [8069],
     "shutdownAction": "stopCompose",
@@ -12,13 +12,18 @@
                 "terminal.integrated.shell.linux": "/bin/bash"
             },
             "extensions": [
-                "ms-python.python",
-                "ms-python.vscode-pylance",
+                "eamodio.gitlens",
+                "DavidAnson.vscode-markdownlint",
+                "DotJoshJohnson.xml",
                 "GitHub.copilot",
                 "GitHub.copilot-chat",
-                "DavidAnson.vscode-markdownlint",
-                "DotJoshJohnson.xml"
+                "ms-azuretools.vscode-docker",
+                "ms-python.python",
+                "ms-python.vscode-pylance"
             ]
         }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
     }
 }
