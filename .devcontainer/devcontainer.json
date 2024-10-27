@@ -5,7 +5,7 @@
     "workspaceFolder": "/workspace/custom",
     "remoteUser": "root",
     "forwardPorts": [8069],
-    "postCreateCommand": "ln -s /workspace/.vscode /workspace/custom/.vscode || true",
+    "postCreateCommand": "[ \"$CODESPACES\" = \"true\" ] && ln -s /workspaces/${localWorkspaceFolderBasename}/.vscode /workspace/custom/.vscode || ([ -z \"$CODESPACES\" ] && ln -s /workspace/.vscode /workspace/custom/.vscode || true)",
     "shutdownAction": "stopCompose",
     "customizations": {
         "vscode": {

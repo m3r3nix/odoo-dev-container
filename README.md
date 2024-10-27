@@ -1,12 +1,12 @@
 [![Build and Push Odoo Dev Container](https://github.com/m3r3nix/odoo-dev-container/actions/workflows/docker-publish.yml/badge.svg?branch=v17)](https://github.com/m3r3nix/odoo-dev-container/actions/workflows/docker-publish.yml)
 
-# Odoo Development Container for GitHub Codespaces
+# Odoo Development Container for GitHub Codespaces and Visual Studio Code on Desktop
 
-You can spin up a development-ready environment in just 4 simple steps:
+Spin up a development-ready environment in just 4 simple steps:
 1. Fork this repository or use it as a template and make it private (particularly if you intend to work with the Enterprise Edition).  
    Ensure that during this process, all branches are copied, not just the default one, if you aim to work with older Odoo versions as well.
 2. Go to GitHub Actions and wait for all build processes to complete successfully. (Should you encounter any issues, please refer to the `Troubleshooting` section.)
-3. Select the branch corresponding to the Odoo version you wish to develop for and initiate a Codespace. (First boot takes about 2 mins.)  
+3. Select the branch corresponding to the Odoo version you wish to develop for and initiate a Codespace. (The first boot takes about 2 minutes, be patient)  
     NOTE: If your work involves the Enterprise Edition, please adhere to the instructions in `Create/Update an Enterprise based image`.
 4. Within the new VS Code instance, select the `Ports` tab. Then, right-click on port `8069` and choose `Open in Browser`. It will launch your new Odoo instance in your web browser.
 
@@ -33,7 +33,7 @@ You can spin up a development-ready environment in just 4 simple steps:
 
 1. Obtain the download link for the latest Odoo Enterprise Debian installation package:  
     <https://www.odoo.com/page/download>  
-    After providing your Odoo Enterprise subscription code, a new page will appear.  
+    After filling the form, click on Download (Ubuntu/Debian) and a "Congratulations! The download is starting" page will appear.  
     Right-click on `Click here` and select `Copy link` from your browser's dropdown menu.  
     This will give you a temporary download link, valid for approximately 30 minutes.   
 2. Replace the URL in `.devcontainer/URL.conf` with the new one you have copied to the clipboard.
@@ -47,7 +47,7 @@ You can spin up a development-ready environment in just 4 simple steps:
 2. Update the `Dockerfile` to reflect the current version from the official repository: <https://github.com/odoo/docker>
 3. Attempt to build it and check for any errors.
 4. Change the image tag in `docker-compose.yml` if necessary.
-5. Update demo addon version number
+5. Update demo addon version number in manifest.py
 6. Update README.md
 
 ## Possible improvements
