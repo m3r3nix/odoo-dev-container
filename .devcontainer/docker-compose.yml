@@ -1,4 +1,3 @@
-version: '3.1'
 services:
   odoo:
     image: "ghcr.io/m3r3nix/odoo-v16-community:latest"
@@ -7,6 +6,7 @@ services:
     ports:
       - "8069:8069"
     volumes:
+      - ../:/workspace
       - ../custom:/mnt/extra-addons
   db:
     image: postgres:15
