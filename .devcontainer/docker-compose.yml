@@ -1,6 +1,6 @@
 services:
   odoo:
-    image: "ghcr.io/m3r3nix/odoo-v17-community:latest"
+    image: "ghcr.io/m3r3nix/odoo-v18-community:latest"
     depends_on:
       - db
     ports:
@@ -9,7 +9,7 @@ services:
       - ../:/workspace
       - ../custom:/mnt/extra-addons
   db:
-    image: postgres:15
+    image: postgres:16
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD=odoo

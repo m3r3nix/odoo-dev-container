@@ -7,6 +7,12 @@
             "label": "Odoo Server Log",
             "type": "shell",
             "command": "tail -f /var/log/odoo/odoo-server.log",
+            "problemMatcher": [],
+            "isBackground": true,
+            "presentation": {
+              "reveal": "always",
+              "panel": "dedicated"
+            }
         }
     ]
 }
