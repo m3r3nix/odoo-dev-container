@@ -1,16 +1,18 @@
 services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: odoo
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
   odoo:
-    image: "ghcr.io/m3r3nix/odoo-v18-community:latest"
+    image: odoo:18.0
     depends_on:
       - db
     ports:
       - "8069:8069"
     volumes:
-      - ../:/workspace
-      - ../custom:/mnt/extra-addons
-  db:
-    image: postgres:16
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_PASSWORD=odoo
-      - POSTGRES_USER=odoo
+      - odoo-web-data:/var/lib/odoo
+      - ./addons:/mnt/extra-addons
+volumes:
+  odoo-web-data:
