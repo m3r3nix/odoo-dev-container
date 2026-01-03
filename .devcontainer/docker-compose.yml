@@ -1,6 +1,6 @@
 services:
   odoo:
-    image: "ghcr.io/m3r3nix/odoo-v18-community:latest"
+    image: "ghcr.io/m3r3nix/odoo-v19-community:latest"
     depends_on:
       - db
     ports:
