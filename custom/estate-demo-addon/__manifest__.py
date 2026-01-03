@@ -3,7 +3,7 @@
     "depends": [
         "base",
     ],
-    "version": "18.0.0.1",
+    "version": "19.0.0.1",
     "application": "True",
     "category": "Sales",
     "description": "Manage real estate offerings",
