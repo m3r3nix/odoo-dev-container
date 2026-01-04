@@ -45,10 +45,10 @@ Spin up a development-ready environment in just 4 simple steps:
 
 1. The default branch should always contain the latest version. Therefore, create a new branch named after the latest version (e.g., `v18`) before making any changes.
 2. Update the `Dockerfile` to reflect the current version from the official repository: <https://github.com/odoo/docker>
-3. Attempt to build it and check for any errors.
+3. Update `URL.conf`, attempt to build it and check for any errors.
 4. Change the image tag in `docker-compose.yml` if necessary.
-5. Update demo addon version number in manifest.py
-6. Update README.md
+5. Update demo addon version number in `manifest.py`
+6. Update `README.md`
 
 ## Possible improvements
 
