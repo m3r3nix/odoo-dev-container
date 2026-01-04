@@ -10,13 +10,11 @@
     "customizations": {
         "vscode": {
             "settings": {
-                "terminal.integrated.shell.linux": "/bin/bash"
+                "terminal.integrated.defaultProfile.linux": "bash"
             },
             "extensions": [
-                "eamodio.gitlens",
                 "DavidAnson.vscode-markdownlint",
                 "DotJoshJohnson.xml",
-                "GitHub.copilot",
                 "GitHub.copilot-chat",
                 "ms-azuretools.vscode-docker",
                 "ms-python.python",
