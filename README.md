@@ -48,7 +48,7 @@ Spin up a development-ready environment in just 4 simple steps:
 3. Update `URL.conf`, attempt to build it and check for any errors.
 4. Change the image tag in `docker-compose.yml` if necessary.
 5. Update demo addon version number in `manifest.py`
-6. Update README.md
+6. Update `README.md`
 
 ## Possible improvements
 
