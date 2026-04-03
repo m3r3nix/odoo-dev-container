@@ -1,100 +1,142 @@
-FROM ubuntu:noble
-MAINTAINER Odoo S.A. <info@odoo.com>
+FROM python:3.12-slim
 
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 
-# Generate locale C.UTF-8 for postgres and general locale data
-ENV LANG en_US.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    ODOO_RC=/etc/odoo/odoo.conf \
+    ODOO_BRANCH=19.0
 
-# Retrieve the target architecture to install the correct wkhtmltopdf package
 ARG TARGETARCH
 
-# Install some deps, lessc and less-plugin-clean-css, and wkhtmltopdf
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive \
-    apt-get install -y --no-install-recommends \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        bash \
+        build-essential \
         ca-certificates \
         curl \
         dirmngr \
         fonts-noto-cjk \
+        git \
         gnupg \
+        libcairo2-dev \
+        libffi-dev \
+        libjpeg-dev \
+        liblcms2-dev \
+        libldap2-dev \
+        libmagic1 \
+        libopenjp2-7-dev \
+        libpq-dev \
+        libsasl2-dev \
         libssl-dev \
+        libtiff-dev \
+        libwebp-dev \
+        libxml2-dev \
+        libxslt1-dev \
+        nginx \
         node-less \
         npm \
-        python3-magic \
-        python3-num2words \
-        python3-odf \
-        python3-pdfminer \
-        python3-pip \
-        python3-phonenumbers \
-        python3-pyldap \
-        python3-qrcode \
-        python3-renderpm \
-        python3-setuptools \
-        python3-slugify \
-        python3-vobject \
-        python3-watchdog \
-        python3-xlrd \
-        python3-xlwt \
-        xz-utils && \
-    if [ -z "${TARGETARCH}" ]; then \
+        openssl \
+        pkg-config \
+        supervisor \
+        xz-utils \
+        zlib1g-dev \
+    && if [ -z "${TARGETARCH}" ]; then \
         TARGETARCH="$(dpkg --print-architecture)"; \
-    fi; \
-    WKHTMLTOPDF_ARCH=${TARGETARCH} && \
-    case ${TARGETARCH} in \
-    "amd64") WKHTMLTOPDF_ARCH=amd64 && WKHTMLTOPDF_SHA=967390a759707337b46d1c02452e2bb6b2dc6d59  ;; \
-    "arm64")  WKHTMLTOPDF_SHA=90f6e69896d51ef77339d3f3a20f8582bdf496cc  ;; \
-    "ppc64le" | "ppc64el") WKHTMLTOPDF_ARCH=ppc64el && WKHTMLTOPDF_SHA=5312d7d34a25b321282929df82e3574319aed25c  ;; \
+    fi \
+    && WKHTMLTOPDF_ARCH="${TARGETARCH}" \
+    && case "${TARGETARCH}" in \
+        amd64) WKHTMLTOPDF_ARCH=amd64;; \
+        arm64) WKHTMLTOPDF_ARCH=arm64;; \
+        ppc64le|ppc64el) WKHTMLTOPDF_ARCH=ppc64el;; \
+        *) echo "Unsupported architecture: ${TARGETARCH}" >&2; exit 1 ;; \
     esac \
-    && curl -o wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.jammy_${WKHTMLTOPDF_ARCH}.deb \
-    && echo ${WKHTMLTOPDF_SHA} wkhtmltox.deb | sha1sum -c - \
+    && curl -fsSL -o wkhtmltox.deb https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6.1-3/wkhtmltox_0.12.6.1-3.bookworm_${WKHTMLTOPDF_ARCH}.deb \
     && apt-get install -y --no-install-recommends ./wkhtmltox.deb \
     && rm -rf /var/lib/apt/lists/* wkhtmltox.deb
 
 # Install latest postgresql-client
-RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ noble-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
-    && GNUPGHOME="$(mktemp -d)" \
-    && export GNUPGHOME \
-    && repokey='B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8' \
-    && gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "${repokey}" \
-    && gpg --batch --armor --export "${repokey}" > /etc/apt/trusted.gpg.d/pgdg.gpg.asc \
-    && gpgconf --kill all \
-    && rm -rf "$GNUPGHOME" \
+RUN install -d /usr/share/postgresql-common/pgdg \
+    && curl -fsSL -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+    && . /etc/os-release \
+    && echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt ${VERSION_CODENAME}-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
     && apt-get update  \
     && apt-get install --no-install-recommends -y postgresql-client \
-    && rm -f /etc/apt/sources.list.d/pgdg.list \
     && rm -rf /var/lib/apt/lists/*
 
-# Install rtlcss (on Debian buster)
 RUN npm install -g rtlcss
 
-# Copy Odoo installation package downloaded in the previous GitHub Action step
-COPY ./odoo.deb /
+# Install Odoo requirements.txt from the given branch and PyPI replacements
+# for Python packages that were previously provided by Debian's python3-* packages.
+RUN curl -fsSL -o requirements.txt https://raw.githubusercontent.com/odoo/odoo/${ODOO_BRANCH}/requirements.txt \
+    && python3 -m pip install --no-cache-dir --upgrade --root-user-action=ignore pip setuptools wheel \
+    && python3 -m pip install --no-cache-dir --root-user-action=ignore \
+        google-auth \
+        odfpy \
+        pdfminer.six \
+        phonenumbers \
+        python-slugify \
+        rlPyCairo \
+        watchdog \
+    && python3 -m pip install --no-cache-dir --root-user-action=ignore -r requirements.txt \
+    && rm requirements.txt
 
-# Install Odoo
-RUN apt-get update \
-    && apt-get -y install --no-install-recommends ./odoo.deb \
-    && rm -rf /var/lib/apt/lists/* odoo.deb
+# Generate self-signed SSL certificate for nginx
+# Some custom module may require HTTPS for development e.g. eBay API
+RUN mkdir -p /etc/nginx/certs \
+    && openssl req -x509 -nodes -newkey rsa:2048 -days 3650 \
+        -keyout /etc/nginx/certs/odoo.localhost.key \
+        -out /etc/nginx/certs/odoo.localhost.crt \
+        -subj "/CN=odoo.localhost" \
+        -addext "subjectAltName=DNS:odoo.localhost,DNS:localhost" \
+    && chown root:root /etc/nginx/certs/odoo.localhost.key /etc/nginx/certs/odoo.localhost.crt \
+    && chmod 600 /etc/nginx/certs/odoo.localhost.key \
+    && chmod 644 /etc/nginx/certs/odoo.localhost.crt
 
-# Copy entrypoint script and Odoo configuration file
-COPY ./entrypoint.sh /
-COPY ./odoo.conf /etc/odoo/
-COPY ./wait-for-psql.py /usr/local/bin/wait-for-psql.py
+RUN if getent passwd 1000 >/dev/null; then \
+        EXISTING_USER="$(getent passwd 1000 | cut -d: -f1)"; \
+        EXISTING_GROUP="$(id -gn "${EXISTING_USER}")"; \
+        if [ "${EXISTING_GROUP}" != "odoo" ]; then \
+            groupmod -n odoo "${EXISTING_GROUP}"; \
+        fi; \
+        if [ "${EXISTING_USER}" != "odoo" ]; then \
+            usermod -l odoo "${EXISTING_USER}"; \
+        fi; \
+        usermod -d /home/odoo -m odoo; \
+    else \
+        groupadd --gid 1000 odoo; \
+        useradd --create-home --home-dir /home/odoo --shell /bin/bash --uid 1000 --gid 1000 odoo; \
+    fi \
+    && mkdir -p /etc/odoo /etc/supervisor /var/log/odoo \
+    && chown -R odoo:odoo /home/odoo /var/log/odoo
 
-# Set permissions and Mount /var/lib/odoo to allow restoring filestore and /mnt/extra-addons for users addons
-RUN chown odoo /etc/odoo/odoo.conf \
-    && mkdir -p /mnt/extra-addons \
-    && chown -R odoo /mnt/extra-addons
-VOLUME ["/var/lib/odoo", "/mnt/extra-addons"]
+COPY ./configs/nginx.conf /etc/nginx/nginx.conf
+COPY ./configs/odoo.conf /etc/odoo/odoo.conf
+COPY ./configs/supervisord.conf /etc/supervisor/supervisord.conf
+COPY ./scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./scripts/pull-sources.sh /usr/local/bin/pull-sources.sh
+COPY ./scripts/run-odoo.sh /usr/local/bin/run-odoo.sh
 
-# Expose Odoo services
-EXPOSE 8069 8071 8072
+RUN chown -R odoo:odoo /etc/odoo/odoo.conf
+RUN chmod 755 \
+        /usr/local/bin/entrypoint.sh \
+        /usr/local/bin/pull-sources.sh \
+        /usr/local/bin/run-odoo.sh
 
-# Set the default config file
-ENV ODOO_RC /etc/odoo/odoo.conf
+# Create system-wide aliases
+RUN echo "alias ll='ls -la'" >> /etc/bash.bashrc
 
-# Set default user when running the container
-USER odoo
+# Improve history search bindings for Bash
+RUN cat >> /etc/inputrc <<'EOF'
+"\C-[OA": history-search-backward
+"\C-[[A": history-search-backward
+"\C-[OB": history-search-forward
+"\C-[[B": history-search-forward
+EOF
 
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["odoo","--dev","xml"]
+EXPOSE 443 8069 8072
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

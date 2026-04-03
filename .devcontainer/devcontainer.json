@@ -1,21 +1,41 @@
 {
     "name": "Odoo Dev Container",
     "dockerComposeFile": "docker-compose.yml",
-    "service": "odoo",
-    "workspaceFolder": "/workspace/custom",
-    "remoteUser": "root",
-    "forwardPorts": [8069],
-    "postCreateCommand": "[ \"$CODESPACES\" = \"true\" ] && ln -s /workspaces/${localWorkspaceFolderBasename}/.vscode /workspace/custom/.vscode || ([ -z \"$CODESPACES\" ] && ln -s /workspace/.vscode /workspace/custom/.vscode || true)",
+    "service": "workspace",
+    "workspaceFolder": "/workspaces/repo/custom",
+    "remoteUser": "odoo",
     "shutdownAction": "stopCompose",
+    "forwardPorts": [443, 8069, 8072],
+    "portsAttributes": {
+        "443": {
+        "label": "Odoo HTTPS",
+        "protocol": "https"
+        },
+        "8069": {
+        "label": "Odoo HTTP",
+        "protocol": "http"
+        }
+    },
     "customizations": {
         "vscode": {
             "settings": {
-                "terminal.integrated.defaultProfile.linux": "bash"
+                "terminal.integrated.cwd": "/workspaces/odoo_source",
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "python.defaultInterpreterPath": "/usr/local/bin/python",
+                "python-envs.defaultEnvManager": "ms-python.python:system",
+                "python.analysis.extraPaths": [
+                    "/workspaces/odoo_source/odoo",
+                    "/workspaces/odoo_source/enterprise"
+                ],
+                "files.watcherExclude": {
+                    "**/workspaces/odoo_source/odoo/**": true,
+                    "**/workspaces/odoo_source/enterprise/**": true
+                }
             },
             "extensions": [
                 "DavidAnson.vscode-markdownlint",
                 "DotJoshJohnson.xml",
-                "GitHub.copilot-chat",
+                "github.copilot-chat",
                 "ms-azuretools.vscode-docker",
                 "ms-python.python",
                 "ms-python.vscode-pylance"
@@ -23,6 +43,9 @@
         }
     },
     "features": {
-        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+            "moby": false
+        },
+        "ghcr.io/devcontainers/features/github-cli:1": {}
     }
 }

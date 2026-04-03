@@ -1,0 +1,5 @@
+# List of python modules required by your CUSTOM addons.
+# This file is checked at every container and Odoo service restart.
+# run-odoo.sh is checking whether any module needs to be installed or upgraded.
+
+#ebaysdk==2.2.0

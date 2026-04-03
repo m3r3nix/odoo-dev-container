@@ -1,16 +1,47 @@
 services:
-  odoo:
-    image: "ghcr.io/m3r3nix/odoo-v19-community:latest"
+  workspace:
+    image: ghcr.io/m3r3nix/odoo-v19-devcontainer:latest
     depends_on:
-      - db
-    ports:
-      - "8069:8069"
+      db:
+        condition: service_healthy
+    environment:
+      ODOO_DB_HOST: db
+      ODOO_DB_PORT: "5432"
+      ODOO_DB_USER: odoo
+      ODOO_DB_PASSWORD: odoo
+      ODOO_COMMUNITY_DIR: /workspaces/odoo_source/odoo
+      ODOO_ENTERPRISE_DIR: /workspaces/odoo_source/enterprise
+      ODOO_CUSTOM_ADDONS_DIR: /workspaces/odoo_source/custom
+      ODOO_FILESTORE_DIR: /workspaces/odoo_source/filestore
+      ODOO_RC: /etc/odoo/odoo.conf
+      ODOO_EXTRA_ARGS: --dev=xml,reload,werkzeug
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+      REPO_DIR: /workspaces/repo
     volumes:
-      - ../:/workspace
-      - ../custom:/mnt/extra-addons
+      - ../:/workspaces/repo
+      - ../../odoo_source/odoo:/workspaces/odoo_source/odoo
+      - ../../odoo_source/enterprise:/workspaces/odoo_source/enterprise
+      - ../../odoo_source/filestore:/workspaces/odoo_source/filestore
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8069/web/login >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 120s
+
   db:
-    image: postgres:16
+    image: pgvector/pgvector:pg16-trixie # PostgreSQL extension 'vector' is required to enable RAG for AI agents in Odoo 19.
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD=odoo
       - POSTGRES_USER=odoo
+    volumes:
+      - odoo_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U odoo -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  odoo_db:
