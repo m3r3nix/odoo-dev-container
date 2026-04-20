@@ -1,4 +1,4 @@
-[![Build and Push Devcontainer Image](https://github.com/m3r3nix/odoo-dev-container-v2/actions/workflows/docker-publish.yml/badge.svg?branch=v19)](https://github.com/m3r3nix/odoo-dev-container-v2/actions/workflows/docker-publish.yml)
+[![Build and Push Devcontainer Image](https://github.com/m3r3nix/odoo-dev-container/actions/workflows/docker-publish.yml/badge.svg?branch=v19)](https://github.com/m3r3nix/odoo-dev-container/actions/workflows/docker-publish.yml)
 
 # Odoo Development Container for GitHub Codespaces and Visual Studio Code on Desktop
 This repository gives you a ready-to-use Odoo development environment for Odoo Community and Enterprise. It contains all the dependencies and configurations needed for development and is designed to work both in GitHub Codespaces and in Visual Studio Code on your local machine (tested on Windows with WSL 2, but propably it works on Linux and macOS as well).
