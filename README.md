@@ -179,10 +179,10 @@ You can also build it locally by replacing the `image` line with a `build` conte
 services:
   workspace:
     # image: ghcr.io/m3r3nix/odoo-v19-devcontainer:latest
-	build:
-	  context: .
-	  dockerfile: .devcontainer/Dockerfile
-	  # The rest of the compose file remains unchanged
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+      # The rest of the compose file remains unchanged
 ```
 
 ## Troubleshooting
