@@ -2,9 +2,12 @@
     "name": "Odoo Dev Container",
     "dockerComposeFile": "docker-compose.yml",
     "service": "workspace",
-    "workspaceFolder": "/workspaces/repo/custom",
+    "workspaceFolder": "/home/${localEnv:USER}/workspaces/repo/custom",
     "remoteUser": "odoo",
     "shutdownAction": "stopCompose",
+    "remoteEnv": {
+        "CODEX_HOME": "/home/${localEnv:USER}/.codex"
+    },
     "forwardPorts": [443, 8069, 8072],
     "portsAttributes": {
         "443": {
@@ -19,17 +22,17 @@
     "customizations": {
         "vscode": {
             "settings": {
-                "terminal.integrated.cwd": "/workspaces/odoo_source",
+                "terminal.integrated.cwd": "/home/${localEnv:USER}/workspaces/odoo_source",
                 "terminal.integrated.defaultProfile.linux": "bash",
                 "python.defaultInterpreterPath": "/usr/local/bin/python",
                 "python-envs.defaultEnvManager": "ms-python.python:system",
                 "python.analysis.extraPaths": [
-                    "/workspaces/odoo_source/odoo",
-                    "/workspaces/odoo_source/enterprise"
+                    "/home/${localEnv:USER}/workspaces/odoo_source/odoo",
+                    "/home/${localEnv:USER}/workspaces/odoo_source/enterprise"
                 ],
                 "files.watcherExclude": {
-                    "**/workspaces/odoo_source/odoo/**": true,
-                    "**/workspaces/odoo_source/enterprise/**": true
+                    "**/home/${localEnv:USER}/workspaces/odoo_source/odoo/**": true,
+                    "**/home/${localEnv:USER}/workspaces/odoo_source/enterprise/**": true
                 }
             },
             "extensions": [
@@ -38,7 +41,8 @@
                 "github.copilot-chat",
                 "ms-azuretools.vscode-docker",
                 "ms-python.python",
-                "ms-python.vscode-pylance"
+                "ms-python.vscode-pylance",
+                "openai.chatgpt"
             ]
         }
     },

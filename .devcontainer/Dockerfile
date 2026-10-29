@@ -33,12 +33,15 @@ RUN apt-get update \
         libtiff-dev \
         libwebp-dev \
         libxml2-dev \
+        libxml2-utils \
         libxslt1-dev \
+        nano \
         nginx \
         node-less \
         npm \
         openssl \
         pkg-config \
+        ripgrep \
         supervisor \
         xz-utils \
         zlib1g-dev \
@@ -115,12 +118,14 @@ COPY ./configs/nginx.conf /etc/nginx/nginx.conf
 COPY ./configs/odoo.conf /etc/odoo/odoo.conf
 COPY ./configs/supervisord.conf /etc/supervisor/supervisord.conf
 COPY ./scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY ./scripts/odoo-paths.sh /usr/local/bin/odoo-paths.sh
 COPY ./scripts/pull-sources.sh /usr/local/bin/pull-sources.sh
 COPY ./scripts/run-odoo.sh /usr/local/bin/run-odoo.sh
 
 RUN chown -R odoo:odoo /etc/odoo/odoo.conf
 RUN chmod 755 \
         /usr/local/bin/entrypoint.sh \
+        /usr/local/bin/odoo-paths.sh \
         /usr/local/bin/pull-sources.sh \
         /usr/local/bin/run-odoo.sh
 

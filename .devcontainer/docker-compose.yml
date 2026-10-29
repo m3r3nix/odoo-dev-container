@@ -1,6 +1,14 @@
 services:
   workspace:
     image: ghcr.io/m3r3nix/odoo-v19-devcontainer:latest
+
+    # Network configuration to be able to access other containers in the same network for API calls
+    networks:
+      default:
+      dev-shared:
+        aliases:
+          - odoo-v19-devcontainer
+
     depends_on:
       db:
         condition: service_healthy
@@ -9,19 +17,22 @@ services:
       ODOO_DB_PORT: "5432"
       ODOO_DB_USER: odoo
       ODOO_DB_PASSWORD: odoo
-      ODOO_COMMUNITY_DIR: /workspaces/odoo_source/odoo
-      ODOO_ENTERPRISE_DIR: /workspaces/odoo_source/enterprise
-      ODOO_CUSTOM_ADDONS_DIR: /workspaces/odoo_source/custom
-      ODOO_FILESTORE_DIR: /workspaces/odoo_source/filestore
       ODOO_RC: /etc/odoo/odoo.conf
       ODOO_EXTRA_ARGS: --dev=xml,reload,werkzeug
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
-      REPO_DIR: /workspaces/repo
+      WORKSPACES_DIR: /home/${USER}/workspaces
     volumes:
-      - ../:/workspaces/repo
-      - ../../odoo_source/odoo:/workspaces/odoo_source/odoo
-      - ../../odoo_source/enterprise:/workspaces/odoo_source/enterprise
-      - ../../odoo_source/filestore:/workspaces/odoo_source/filestore
+      - /home/${USER}/.codex:/home/odoo/.codex
+      - ../:/home/${USER}/workspaces/repo
+      - ../../odoo_source/odoo:/home/${USER}/workspaces/odoo_source/odoo
+      - ../../odoo_source/enterprise:/home/${USER}/workspaces/odoo_source/enterprise
+      - ../../odoo_source/filestore:/home/${USER}/workspaces/odoo_source/filestore
+      - ./configs/odoo.conf:/tmp/odoo.conf.template:ro
+      - ./configs/supervisord.conf:/etc/supervisor/supervisord.conf:ro
+      - ./scripts/entrypoint.sh:/usr/local/bin/entrypoint.sh:ro
+      - ./scripts/odoo-paths.sh:/usr/local/bin/odoo-paths.sh:ro
+      - ./scripts/pull-sources.sh:/usr/local/bin/pull-sources.sh:ro
+      - ./scripts/run-odoo.sh:/usr/local/bin/run-odoo.sh:ro
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8069/web/login >/dev/null"]
       interval: 10s
@@ -42,6 +53,10 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
+
+networks:
+  dev-shared:
+    external: true
 
 volumes:
   odoo_db:

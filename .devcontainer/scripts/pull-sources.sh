@@ -2,10 +2,11 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=odoo-paths.sh
+source "${SCRIPT_DIR}/odoo-paths.sh"
+
 : "${ODOO_BRANCH:=19.0}"
-: "${ODOO_DATA_DIR:=/workspaces/odoo_source}"
-: "${ODOO_COMMUNITY_DIR:=${ODOO_DATA_DIR}/odoo}"
-: "${ODOO_ENTERPRISE_DIR:=${ODOO_DATA_DIR}/enterprise}"
 
 
 enterprise_subscription() {
