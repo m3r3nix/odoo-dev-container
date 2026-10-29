@@ -68,7 +68,8 @@ RUN install -d /usr/share/postgresql-common/pgdg \
     && apt-get install --no-install-recommends -y postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g rtlcss
+# OdooLS uses tsserver, which is included in TypeScript 6 but not TypeScript 7.
+RUN npm install -g rtlcss typescript@6
 
 # Install Odoo requirements.txt from the given branch and PyPI replacements
 # for Python packages that were previously provided by Debian's python3-* packages.

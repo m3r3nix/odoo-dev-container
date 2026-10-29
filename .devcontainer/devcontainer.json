@@ -19,6 +19,7 @@
     "customizations": {
         "vscode": {
             "settings": {
+                "Odoo.serverConfigPath": "/workspaces/repo/odools.toml",
                 "terminal.integrated.cwd": "/workspaces/odoo_source",
                 "terminal.integrated.defaultProfile.linux": "bash",
                 "python.defaultInterpreterPath": "/usr/local/bin/python",

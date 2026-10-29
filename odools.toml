@@ -1,0 +1,8 @@
+[[config]]
+name = "default"
+odoo_path = "../odoo_source/odoo"
+addons_paths = [
+    "../odoo_source/enterprise",
+    "./custom",
+]
+python_path = "python3"
