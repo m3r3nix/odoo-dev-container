@@ -52,6 +52,7 @@ The script will:
 - update the `origin/20.0` branch for Odoo Community if it already exists
 - ask `Do you have an Odoo Enterprise subscription?` before cloning Enterprise for the first time into `/workspaces/odoo_source/enterprise`. If you do not use Enterprise, answer `no` and the script will skip it.
 - update Enterprise from `origin/20.0` when an Enterprise checkout already exists
+- after pulling the `Enterprise` source restart the Odoo Language Server extension, in order to index the new modules.
 
 ## How this container works
 
@@ -92,7 +93,7 @@ The HTTPS endpoint uses a self-signed certificate. Use it only when you need HTT
 The compose setup starts two services:
 
 - `workspace`: the main devcontainer service built from `.devcontainer/Dockerfile`
-- `db`: PostgreSQL 16 with its data stored in `odoo_db` Docker volume
+- `db`: PostgreSQL 18 with its data stored in `odoo_db` Docker volume
 
 Inside the `workspace` container, `supervisord` starts:
 
