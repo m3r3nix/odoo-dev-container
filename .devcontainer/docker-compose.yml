@@ -1,6 +1,7 @@
 services:
   workspace:
     image: ghcr.io/m3r3nix/odoo-v19-devcontainer:latest
+
     depends_on:
       db:
         condition: service_healthy
@@ -9,14 +10,10 @@ services:
       ODOO_DB_PORT: "5432"
       ODOO_DB_USER: odoo
       ODOO_DB_PASSWORD: odoo
-      ODOO_COMMUNITY_DIR: /workspaces/odoo_source/odoo
-      ODOO_ENTERPRISE_DIR: /workspaces/odoo_source/enterprise
-      ODOO_CUSTOM_ADDONS_DIR: /workspaces/odoo_source/custom
-      ODOO_FILESTORE_DIR: /workspaces/odoo_source/filestore
       ODOO_RC: /etc/odoo/odoo.conf
       ODOO_EXTRA_ARGS: --dev=xml,reload,werkzeug
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
-      REPO_DIR: /workspaces/repo
+      WORKSPACES_DIR: /workspaces
     volumes:
       - ../:/workspaces/repo
       - ../../odoo_source/odoo:/workspaces/odoo_source/odoo
