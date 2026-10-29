@@ -32,7 +32,7 @@ services:
       - POSTGRES_PASSWORD=odoo
       - POSTGRES_USER=odoo
     volumes:
-      - odoo_db:/var/lib/postgresql/data
+      - odoo_db:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U odoo -d postgres"]
       interval: 5s
