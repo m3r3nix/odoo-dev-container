@@ -3,7 +3,7 @@
 # Odoo Development Container for GitHub Codespaces and Visual Studio Code on Desktop
 This repository gives you a ready-to-use Odoo development environment for Odoo Community and Enterprise. It contains all the dependencies and configurations needed for development and is designed to work both in GitHub Codespaces and in Visual Studio Code on your local machine (tested on Windows with WSL 2, but propably it works on Linux and macOS as well).
 
-**⚠️ Important:** The `v19 and v20` branch has a new implementation which solves two painpoints of the older versions (branch `v18` and olders):
+**⚠️ Important:** The `v19` and `v20` branches introduce a new implementation that addresses two major pain points found in earlier versions (`v18` and older):
 1. Odoo no longer runs as the main process of the container, so you can restart the Odoo service without restarting the whole container. This allows you to use Odoo's built-in `--dev=reload` support for Python code changes, which is a much smoother development experience.
 2. The container image now contains only the runtime dependencies, Odoo Community and Enterprise source code are mounted from the host machine. This makes it much easier to keep the source code up to date. 
 
