@@ -20,19 +20,12 @@ services:
       ODOO_RC: /etc/odoo/odoo.conf
       ODOO_EXTRA_ARGS: --dev=xml,reload,werkzeug
       PIP_DISABLE_PIP_VERSION_CHECK: "1"
-      WORKSPACES_DIR: /home/${USER}/workspaces
+      WORKSPACES_DIR: /workspaces
     volumes:
-      - /home/${USER}/.codex:/home/odoo/.codex
-      - ../:/home/${USER}/workspaces/repo
-      - ../../odoo_source/odoo:/home/${USER}/workspaces/odoo_source/odoo
-      - ../../odoo_source/enterprise:/home/${USER}/workspaces/odoo_source/enterprise
-      - ../../odoo_source/filestore:/home/${USER}/workspaces/odoo_source/filestore
-      - ./configs/odoo.conf:/tmp/odoo.conf.template:ro
-      - ./configs/supervisord.conf:/etc/supervisor/supervisord.conf:ro
-      - ./scripts/entrypoint.sh:/usr/local/bin/entrypoint.sh:ro
-      - ./scripts/odoo-paths.sh:/usr/local/bin/odoo-paths.sh:ro
-      - ./scripts/pull-sources.sh:/usr/local/bin/pull-sources.sh:ro
-      - ./scripts/run-odoo.sh:/usr/local/bin/run-odoo.sh:ro
+      - ../:/workspaces/repo
+      - ../../odoo_source/odoo:/workspaces/odoo_source/odoo
+      - ../../odoo_source/enterprise:/workspaces/odoo_source/enterprise
+      - ../../odoo_source/filestore:/workspaces/odoo_source/filestore
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8069/web/login >/dev/null"]
       interval: 10s

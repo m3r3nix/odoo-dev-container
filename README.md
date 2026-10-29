@@ -134,6 +134,20 @@ View the Odoo log with the included VS Code task `Odoo Server Log`, or run the f
 tail -f /var/log/odoo/odoo-server.log
 ```
 
+#### Starting Odoo manually
+
+Sourcing the shared path definitions is mandatory before starting an Odoo
+instance manually or running Python code that loads the Odoo configuration:
+
+```bash
+source /usr/local/bin/odoo-paths.sh
+python3 "$ODOO_COMMUNITY_DIR/odoo-bin" -c /etc/odoo/odoo.conf -d your_database --stop-after-init
+```
+
+Do not invoke `odoo-bin` from an environment where `odoo-paths.sh` has not been
+sourced. Unresolved path variables can otherwise be interpreted as literal,
+working-directory-relative paths.
+
 ### Your custom Python dependencies
 
 Add Python packages required by your custom addons to `custom/requirements.txt`.
