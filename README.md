@@ -1,9 +1,9 @@
-[![Build and Push Devcontainer Image](https://github.com/m3r3nix/odoo-dev-container/actions/workflows/docker-publish.yml/badge.svg?branch=v19)](https://github.com/m3r3nix/odoo-dev-container/actions/workflows/docker-publish.yml)
+[![Build and Push Devcontainer Image](https://github.com/m3r3nix/odoo-dev-container/actions/workflows/docker-publish.yml/badge.svg?branch=v20)](https://github.com/m3r3nix/odoo-dev-container/actions/workflows/docker-publish.yml)
 
 # Odoo Development Container for GitHub Codespaces and Visual Studio Code on Desktop
 This repository gives you a ready-to-use Odoo development environment for Odoo Community and Enterprise. It contains all the dependencies and configurations needed for development and is designed to work both in GitHub Codespaces and in Visual Studio Code on your local machine (tested on Windows with WSL 2, but propably it works on Linux and macOS as well).
 
-**⚠️ Important:** The `v19` branch has a new implementation which solves two painpoints of the older versions (branch `v18` and olders):
+**⚠️ Important:** The `v19 and v20` branch has a new implementation which solves two painpoints of the older versions (branch `v18` and olders):
 1. Odoo no longer runs as the main process of the container, so you can restart the Odoo service without restarting the whole container. This allows you to use Odoo's built-in `--dev=reload` support for Python code changes, which is a much smoother development experience.
 2. The container image now contains only the runtime dependencies, Odoo Community and Enterprise source code are mounted from the host machine. This makes it much easier to keep the source code up to date. 
 
@@ -49,9 +49,9 @@ pull-sources.sh
 The script will:
 
 - clone Odoo Community into `/workspaces/odoo_source/odoo` if it does not exist yet
-- update the `origin/19.0` branch for Odoo Community if it already exists
+- update the `origin/20.0` branch for Odoo Community if it already exists
 - ask `Do you have an Odoo Enterprise subscription?` before cloning Enterprise for the first time into `/workspaces/odoo_source/enterprise`. If you do not use Enterprise, answer `no` and the script will skip it.
-- update Enterprise from `origin/19.0` when an Enterprise checkout already exists
+- update Enterprise from `origin/20.0` when an Enterprise checkout already exists
 
 ## How this container works
 
@@ -167,7 +167,7 @@ Default development settings:
 - PostgreSQL host: `db`
 - PostgreSQL user/password: `odoo` / `odoo`
 - Odoo admin password: `admin`
-- Odoo branch: `19.0`
+- Odoo branch: `20.0`
 - Odoo extra args: `--dev=xml,reload,werkzeug` (can be changed in `docker-compose.yml`)
 
 ## Notes
@@ -192,7 +192,7 @@ You can also build it locally by replacing the `image` line with a `build` conte
 ```yaml
 services:
   workspace:
-    # image: ghcr.io/m3r3nix/odoo-v19-devcontainer:latest
+    # image: ghcr.io/m3r3nix/odoo-v20-devcontainer:latest
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
@@ -200,4 +200,4 @@ services:
 ```
 
 ## Troubleshooting
-- If the Python interpreter is not detected correctly in VS Code, open the command palette and run `Python: Select Interpreter`, then choose `3.12.x` for Odoo `v19`.
+- If the Python interpreter is not detected correctly in VS Code, open the command palette and run `Python: Select Interpreter`, then choose `3.14.x` for Odoo `v20`.

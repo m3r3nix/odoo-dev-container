@@ -6,7 +6,7 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=odoo-paths.sh
 source "${SCRIPT_DIR}/odoo-paths.sh"
 
-: "${ODOO_BRANCH:=19.0}"
+: "${ODOO_BRANCH:=20.0}"
 
 
 enterprise_subscription() {

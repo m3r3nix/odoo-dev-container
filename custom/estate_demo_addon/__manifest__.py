@@ -4,7 +4,7 @@
     "depends": [
         "base",
     ],
-    "version": "19.0.0.1",
+    "version": "20.0.0.1",
     "application": True,
     "category": "Sales",
     "description": "Manage real estate offerings",

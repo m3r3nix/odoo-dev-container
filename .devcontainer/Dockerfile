@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.14-slim
 
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 
@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
     ODOO_RC=/etc/odoo/odoo.conf \
-    ODOO_BRANCH=19.0
+    ODOO_BRANCH=20.0
 
 ARG TARGETARCH
 

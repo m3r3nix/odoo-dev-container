@@ -44,7 +44,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Derive image name based on branch (e.g. v19 -> odoo-v19-devcontainer)
+      # Derive image name based on branch (e.g. v20 -> odoo-v20-devcontainer)
       # If the branch name doesn't match the expected vXX pattern, it will default to odoo-devcontainer-testing
       - name: Derive branch image name
         if: github.event_name != 'pull_request'

@@ -1,6 +1,6 @@
 services:
   workspace:
-    image: ghcr.io/m3r3nix/odoo-v19-devcontainer:latest
+    image: ghcr.io/m3r3nix/odoo-v20-devcontainer:latest
     depends_on:
       db:
         condition: service_healthy
@@ -26,7 +26,7 @@ services:
       start_period: 120s
 
   db:
-    image: pgvector/pgvector:pg16-trixie # PostgreSQL extension 'vector' is required to enable RAG for AI agents in Odoo 19.
+    image: pgvector/pgvector:pg18-trixie # PostgreSQL extension 'vector' is required to enable RAG for AI agents in Odoo 19 and later.
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD=odoo
