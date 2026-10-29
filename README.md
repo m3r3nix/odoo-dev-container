@@ -52,7 +52,8 @@ The script will:
 - update the `origin/20.0` branch for Odoo Community if it already exists
 - ask `Do you have an Odoo Enterprise subscription?` before cloning Enterprise for the first time into `/workspaces/odoo_source/enterprise`. If you do not use Enterprise, answer `no` and the script will skip it.
 - update Enterprise from `origin/20.0` when an Enterprise checkout already exists
-- after pulling the `Enterprise` source restart the Odoo Language Server extension, in order to index the new modules.
+
+After pulling the `Enterprise` source code, restart the Odoo Language Server extension to ensure the new modules are indexed.
 
 ## How this container works
 
