@@ -1,6 +1,6 @@
 services:
   workspace:
-    image: ghcr.io/m3r3nix/odoo-devcontainer-testing:latest
+    image: ghcr.io/m3r3nix/odoo-v19-devcontainer:latest
 
     depends_on:
       db:
